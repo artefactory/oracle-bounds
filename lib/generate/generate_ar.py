@@ -43,6 +43,7 @@ def generate_stationary_ar_coefficients(degree, seed):
         np.random.seed(seed)
     while True:
         coefficients = np.random.uniform(-1, 1, degree)
+        coefficients = coefficients / np.sum(np.abs(coefficients))
         if check_stationary(coefficients):
             return coefficients
 

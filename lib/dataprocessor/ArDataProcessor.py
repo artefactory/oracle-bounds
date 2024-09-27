@@ -10,8 +10,7 @@ class ArDataProcessor(ADataProcessor):
         self.degree = degree
 
     def process(self, series):
-        X = pd.DataFrame()
-        Y = pd.DataFrame(series)
-        for i in range(self.degree):
-            X[f'x_{i}'] = Y.shift(i+1)
-        return np.array(X.values)[self.degree:], np.array(Y.values)[self.degree:]
+        y = pd.DataFrame(series)
+        shifted_columns = [y.shift(i + 1).rename(columns={y.columns[0]: f'x_{i}'}) for i in range(self.degree)]
+        x = pd.concat(shifted_columns, axis=1)
+        return np.array(x.values)[self.degree:], np.array(y.values)[self.degree:]
